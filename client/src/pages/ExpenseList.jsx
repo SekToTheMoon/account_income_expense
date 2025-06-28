@@ -209,7 +209,7 @@ const ExpenseList = () => {
       )}
       {isModalEditOpen && (
         <ModalEditExpense
-          expense={selectedEditExpense}
+          expense_id={selectedEditExpense}
           onClose={closeEditModal}
           onUpdate={fetchListExpense}
         />

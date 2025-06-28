@@ -2,12 +2,11 @@ const multer = require("multer");
 const path = require("path");
 // Config Multer สำหรับเก็บไฟล์ในโฟลเดอร์ uploads
 
-const generateFileName = (originalName) => {
+const generateFileName = (originalName, id) => {
   const date = new Date();
-  const formattedDate = date.toISOString().split("T")[0].replace(/-/g, ""); // YYYYMMDD
-  const randomNum = Math.floor(1000 + Math.random() * 9000); // เลข 4 หลัก
+  const formattedDate = Math.random().toString(36).substring(2, 15); // สุ่มชื่อไฟล์
   const ext = path.extname(originalName); // ดึงนามสกุลไฟล์
-  return `${formattedDate}_${randomNum}${ext}`;
+  return `${id}_${formattedDate}${ext}`;
 };
 
 const storageIncome = multer.diskStorage({
@@ -16,7 +15,7 @@ const storageIncome = multer.diskStorage({
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    cb(null, generateFileName(file.originalname));
+    cb(null, generateFileName(file.originalname, req.body.bill_number));
   },
 });
 
@@ -26,7 +25,7 @@ const storageExpense = multer.diskStorage({
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    cb(null, generateFileName(file.originalname));
+    cb(null, generateFileName(file.originalname, req.body.payment_number));
   },
 });
 

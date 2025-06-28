@@ -36,7 +36,7 @@ router.get("/api/expenses", async (req, res) => {
       FROM expenses e
       JOIN account a ON e.account = a.id
       ${whereClause}
-      ORDER BY e.created_at DESC
+      ORDER BY e.payDate DESC
       LIMIT ? OFFSET ?
     `;
 
@@ -231,14 +231,14 @@ router.post(
   uploadExpense.array("files"),
   async (req, res) => {
     try {
-      const { expense_id, group_sequence } = req.body;
+      const { payment_number, group_sequence } = req.body;
       const filePaths = req.files.map((file) => file.filename);
 
       // บันทึกลงฐานข้อมูล
       for (const file of filePaths) {
         await db.query(
           "INSERT INTO expenses_img (expenses_pk,group_sequence, fileName) VALUES (?,?, ?)",
-          [expense_id, group_sequence, file]
+          [payment_number, group_sequence, file]
         );
       }
 

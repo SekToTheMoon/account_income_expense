@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const ModalEditExpense = ({ expenseObject, onClose, onUpdate }) => {
-  const { expense_id, group_sequence } = expenseObject;
+const ModalEditExpense = ({ expense_id, onClose, onUpdate }) => {
+  const { payment_number, group_sequence } = expense_id;
 
   const [formData, setFormData] = useState({
     payment_number: "",
@@ -31,12 +31,12 @@ const ModalEditExpense = ({ expenseObject, onClose, onUpdate }) => {
   };
 
   useEffect(() => {
-    if (expense_id) {
+    if (payment_number) {
       axios
         .get(
           `${
             import.meta.env.VITE_SERVER_URL
-          }/api/expenses/${expense_id}/${group_sequence}`
+          }/api/expenses/${payment_number}/${group_sequence}`
         )
         .then((res) => {
           const data = res.data.results[0];
@@ -56,7 +56,7 @@ const ModalEditExpense = ({ expenseObject, onClose, onUpdate }) => {
 
       fetchBank();
     }
-  }, [expense_id]);
+  }, [payment_number]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -88,14 +88,14 @@ const ModalEditExpense = ({ expenseObject, onClose, onUpdate }) => {
       await axios.put(
         `${
           import.meta.env.VITE_SERVER_URL
-        }/api/expenses/${expense_id}/${group_sequence}`,
+        }/api/expenses/${payment_number}/${group_sequence}`,
         formData
       );
 
       if (newImages.length > 0) {
         const uploadData = new FormData();
         newImages.forEach((image) => uploadData.append("files", image));
-        uploadData.append("expense_id", expense_id);
+        uploadData.append("payment_number", payment_number);
         uploadData.append("group_sequence", group_sequence);
 
         await axios.post(

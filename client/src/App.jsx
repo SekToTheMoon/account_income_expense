@@ -34,7 +34,7 @@ function App() {
           </div>
           <div>
             <h2 className="text-md font-bold ">รายจ่าย</h2>
-            <h5>Ex202503000</h5>
+            <h5>Ex20250400</h5>
             <ExpenseForm account={account} onUpdate={fetchBank} />
           </div>
         </div>
